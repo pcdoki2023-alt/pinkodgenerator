@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIN kód generáló</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        #codeDisplay { margin-top: 20px; font-size: 1.2em; color: #333; }
+    </style>
+</head>
+<body>
+    <h1>PIN kód generáló</h1>
+
+    <!-- Jelszó mező -->
+    <div id="login">
+        <label for="password">Adj meg egy jelszót:</label>
+        <input type="password" id="password">
+        <button id="loginBtn">Belépés</button>
+        <p id="errorMsg" style="color: red;"></p>
+    </div>
+
+    <!-- Kódok megjelenítése, csak belépés után -->
+    <div id="codeSection" style="display: none;">
+        <button id="generateBtn">Generálj két kódot</button>
+        <p id="codeDisplay1"></p>
+        <p id="codeDisplay2"></p>
+    </div>
+
+    <script>
+        // A belépési jelszó
+        const correctPassword = 'titkos123'; // Ezt cseréld a saját jelszavadra
+
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const userPassword = document.getElementById('password').value;
+            if (userPassword === correctPassword) {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('codeSection').style.display = 'block';
+            } else {
+                document.getElementById('errorMsg').innerText = 'Hibás jelszó!';
+            }
+        });
+
+        function generateCodes() {
+            let code1 = '';
+            let code2 = '';
+            for (let i = 0; i < 6; i++) {
+                code1 += Math.floor(Math.random() * 10);
+                code2 += Math.floor(Math.random() * 10);
+            }
+            document.getElementById('codeDisplay1').innerText = 'Kód 1: ' + code1;
+            document.getElementById('codeDisplay2').innerText = 'Kód 2: ' + code2;
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', generateCodes);
+    </script>
+</body>
+</html>
