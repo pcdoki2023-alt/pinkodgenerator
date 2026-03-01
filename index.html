@@ -7,6 +7,10 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         #codeDisplay { margin-top: 20px; font-size: 1.2em; color: #333; }
+        #codeList { margin-top: 20px; }
+        .codeItem { margin-bottom: 10px; }
+        .active { color: green; }
+        .inactive { color: red; }
     </style>
 </head>
 <body>
@@ -23,13 +27,16 @@
     <!-- Kódok megjelenítése, csak belépés után -->
     <div id="codeSection" style="display: none;">
         <button id="generateBtn">Generálj két kódot</button>
-        <p id="codeDisplay1"></p>
-        <p id="codeDisplay2"></p>
+        <div id="codeDisplay"></div>
+        <div id="codeList"></div>
     </div>
 
     <script>
         // A belépési jelszó
-        const correctPassword = 'titkos123'; // Ezt cseréld a saját jelszavadra
+        const correctPassword = '19890221';
+
+        // Kódok tárolása tömbben
+        let codes = [];
 
         document.getElementById('loginBtn').addEventListener('click', function() {
             const userPassword = document.getElementById('password').value;
@@ -48,8 +55,24 @@
                 code1 += Math.floor(Math.random() * 10);
                 code2 += Math.floor(Math.random() * 10);
             }
-            document.getElementById('codeDisplay1').innerText = 'Kód 1: ' + code1;
-            document.getElementById('codeDisplay2').innerText = 'Kód 2: ' + code2;
+
+            const now = new Date();
+            const timestamp = now.toLocaleString();
+
+            codes.push({ code: code1, status: 'active', time: timestamp });
+            codes.push({ code: code2, status: 'active', time: timestamp });
+
+            updateCodeDisplay();
+        }
+
+        function updateCodeDisplay() {
+            // Aktuális kódok megjelenítése
+            let codeDisplay = document.getElementById('codeDisplay');
+            codeDisplay.innerHTML = '';
+
+            codes.forEach((item, index) => {
+                codeDisplay.innerHTML += `<div class="codeItem">Kód ${index + 1}: ${item.code} - Státusz: <span class="${item.status === 'active' ? 'active' : 'inactive'}">${item.status}</span> (idő: ${item.time})</div>`;
+            });
         }
 
         document.getElementById('generateBtn').addEventListener('click', generateCodes);
